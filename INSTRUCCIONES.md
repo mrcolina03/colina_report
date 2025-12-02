@@ -70,4 +70,5 @@ http://localhost:8002/api/reports
 1. Abra Postman
 2. Clic en **Import**
 3. Seleccione el archivo `colina_report.postman_collection.json`
-4. La colección aparecerá lista para usar  
+4. La colección aparecerá lista para usar
+   NOTA: se debe cambiar de puerto 8003 a 8002 para que funcione.
