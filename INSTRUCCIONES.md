@@ -24,7 +24,7 @@ docker network create red-reports
 ```bash
 docker run -d `
   --name mysql2 `
-  --network red-libros `
+  --network red-reports `
   -e MYSQL_ROOT_PASSWORD=Espe2025. `
   -e MYSQL_DATABASE=sysdb2025 `
   -p 3307:3306 `
