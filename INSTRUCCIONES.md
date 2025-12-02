@@ -1,93 +1,73 @@
-# API RESTful de Libros con Docker
+# API RESTful de Reportes con Docker
 
-Sistema completo de gestión de reportes.
+Sistema completo para la gestión de **reportes**, ejecutado mediante contenedores Docker.
 
-## Requisitos Previos
+## 🛠️ Requisitos Previos
 
 Antes de comenzar, asegúrese de tener instalado:
 
-- **Docker** (versión 20.10 o superior)
-- **Docker Hub Account** (para descargar la imagen)
+- **Docker** (20.10 o superior)
+- **Cuenta en Docker Hub**
 - **Postman** (para pruebas de la API)
+- Archivo de pruebas: **`colina_report.postman_collection.json`**
 
+## 🚀 Instrucciones de Ejecución
 
-## Instrucciones de Ejecución
-
-### Paso 1: Crear la Red de Docker
-
-Primero, cree una red personalizada para permitir la comunicación entre contenedores:
+### 1️⃣ Crear la red de Docker
 
 ```bash
-docker network create red-libros
+docker network create red-reports
 ```
 
-### Paso 2: Levantar el Contenedor de MySQL
-
-Ejecute el siguiente comando para iniciar MySQL en Docker:
+### 2️⃣ Levantar el contenedor de MySQL
 
 ```bash
 docker run -d `
-  --name mysql2 `
-  --network red-libros `
+  --name mysql-colina-report `
+  --network red-reports `
   -e MYSQL_ROOT_PASSWORD=Espe2025. `
   -e MYSQL_DATABASE=sysdb2025 `
   -p 3307:3306 `
   mysql:8.0
 ```
 
-### Paso 3: Descargar y Ejecutar la API de Libros
-
+### 3️⃣ Descargar y ejecutar la API de Reportes
 
 ```bash
-docker pull mrcolina/api-restful-libros:1.0
+docker pull mrcolina/colina_report
 
 docker run -d `
-  --name api-restful-libros-container `
-  --network red-libros `
-  -p 8001:8001 `
-  mrcolina/api-restful-libros:1.0
-
+  --name colina-report-api `
+  --network red-reports `
+  -p 8002:8002 `
+  mrcolina/colina_report
 ```
 
-### Paso 4: Verificar que la API está funcionando
+### 4️⃣ Verificar que los contenedores están funcionando
 
-
-# Verificar que ambos contenedores están corriendo
-```
+```bash
 docker ps
 ```
 
-Debería ver ambos contenedores (mysql2 y api-restful-libros-container) en estado "Up".
-
-### Paso 6: Probar la API
-
-Abra su navegador para verificar:
+### 5️⃣ Probar la API
 
 ```bash
-http://localhost:8001/api/libros
+http://localhost:8002/api/reports
 ```
 
-La API está lista cuando recibe una respuesta (puede ser un array vacío `[]` al inicio).
+## 📡 Endpoints Disponibles
 
-## Endpoints Disponibles
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET    | `/api/reports` | Listar todos los reportes |
+| GET    | `/api/reports/{id}` | Obtener un reporte por ID |
+| POST   | `/api/reports` | Crear un nuevo reporte |
+| PUT    | `/api/reports/{id}` | Actualizar un reporte |
+| DELETE | `/api/reports/{id}` | Eliminar un reporte |
 
-La API expone los siguientes endpoints REST:
-
-| GET | `/api/libros` | Listar todos los libros |
-
-| GET | `/api/libros/{id}` | Obtener un libro por ID |
-
-| POST | `/api/libros` | Crear un nuevo libro |
-
-| PUT | `/api/libros/{id}` | Actualizar un libro existente |
-
-| DELETE | `/api/libros/{id}` | Eliminar un libro |
-
-## Pruebas con Postman
-
-### Importar la Colección
+## 🧪 Pruebas con Postman
 
 1. Abra Postman
-2. Click en "Import"
-3. Seleccione el archivo `coleccion-api-restful-libros.postman_collection.json`
-4. La colección aparecerá en su sidebar
+2. Clic en **Import**
+3. Seleccione el archivo `colina_report.postman_collection.json`
+4. La colección aparecerá lista para usar  

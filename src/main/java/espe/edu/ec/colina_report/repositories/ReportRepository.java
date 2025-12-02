@@ -1,9 +1,9 @@
 package espe.edu.ec.colina_report.repositories;
-import jakarta.transaction.Transactional;
-import org.springframework.data.repository.CrudRepository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import espe.edu.ec.colina_report.models.entities.Report;
 
-@Transactional
-public interface ReportRepository extends CrudRepository<Report, Long> {
-
+@Repository
+public interface ReportRepository extends JpaRepository<Report, Long> {
 }

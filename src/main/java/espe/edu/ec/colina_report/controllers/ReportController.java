@@ -2,9 +2,7 @@ package espe.edu.ec.colina_report.controllers;
 
 import espe.edu.ec.colina_report.models.entities.Report;
 import espe.edu.ec.colina_report.services.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,44 +11,47 @@ import java.util.List;
 @RequestMapping("/api/reports")
 public class ReportController {
 
-    @Autowired
-    private ReportService reportService;
+    private final ReportService service;
+
+    public ReportController(ReportService service) {
+        this.service = service;
+    }
 
     // -------- GET: obtener todos --------
     @GetMapping
     public ResponseEntity<List<Report>> listar() {
-        return ResponseEntity.ok(reportService.buscarTodos());
+        return ResponseEntity.ok(service.buscarTodos());
     }
 
     // -------- GET: buscar por ID --------
     @GetMapping("/{id}")
     public ResponseEntity<Report> obtenerPorId(@PathVariable Long id) {
-        return reportService.buscarPorId(id)
+        return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // -------- POST: crear --------
     @PostMapping
-    public ResponseEntity<Report> crear( @RequestBody Report report) {
-        Report nuevoReport = reportService.guardar(report);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoReport);
+    public ResponseEntity<Report> crear(@RequestBody Report report) {
+        Report saved = service.guardar(report);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     // -------- PUT: actualizar --------
     @PutMapping("/{id}")
-    public ResponseEntity<Report> actualizar(@PathVariable Long id,
-                                              @RequestBody Report reportDetalles) {
+    public ResponseEntity<Report> actualizar(
+            @PathVariable Long id,
+            @RequestBody Report detalles) {
 
-        return reportService.buscarPorId(id)
+        return service.buscarPorId(id)
                 .map(reportDB -> {
-                    reportDB.setTitle(reportDetalles.getTitle());
-                    reportDB.setContent(reportDetalles.getContent());
-                    reportDB.setCreatedBy(reportDetalles.getCreatedBy());
-                    reportDB.setCreatedAt(reportDetalles.getCreatedAt());
-                    reportDB.setStatus(reportDetalles.getStatus());
+                    reportDB.setTitle(detalles.getTitle());
+                    reportDB.setContent(detalles.getContent());
+                    reportDB.setCreatedBy(detalles.getCreatedBy());
+                    reportDB.setStatus(detalles.getStatus());
 
-                    Report actualizado = reportService.guardar(reportDB);
+                    Report actualizado = service.guardar(reportDB);
                     return ResponseEntity.ok(actualizado);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -59,9 +60,9 @@ public class ReportController {
     // -------- DELETE: eliminar --------
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        return reportService.buscarPorId(id)
+        return service.buscarPorId(id)
                 .map(report -> {
-                    reportService.eliminarPorId(id);
+                    service.eliminarPorId(id);
                     return ResponseEntity.noContent().build();
                 })
                 .orElse(ResponseEntity.notFound().build());

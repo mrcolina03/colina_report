@@ -1,35 +1,29 @@
 package espe.edu.ec.colina_report.models.entities;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "report")
 public class Report {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column
+    @Column(nullable = false)
     private String createdBy;
 
-    @Column
-    private LocalDateTime createdAt;
-
-    @Column
+    @Column(nullable = false)
     private String status;
 
-    // Constructor vacío
-    public Report() {
-    }
+    public Report() {}
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -62,27 +56,11 @@ public class Report {
         this.createdBy = createdBy;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    // Método para establecer automáticamente la fecha de creación
-    @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
     }
 }
